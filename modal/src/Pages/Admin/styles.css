@@ -1,0 +1,20 @@
+
+
+/* Modal style */
+.modal-h1 {
+  
+}
+.modal-close-button {
+  float: right;
+  font-size: 1.5rem;
+  color: #ccc;
+}
+
+.modal-close-button:hover {
+  color: #000;
+  }
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+}  
