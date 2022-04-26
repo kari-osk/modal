@@ -27,15 +27,18 @@ const customStyle = {
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)'
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    zIndex: '9999'
   }
 }
+Modal.setAppElement('#root')
 
 export default function Admin() {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(false)
 
   const [id, setId] = useState('')
+  const [category, setCategory] = useState('')
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
@@ -51,28 +54,30 @@ export default function Admin() {
 
   //getProducts()-----------------------------------------
   async function getProducts() {
-    setLoading(true)
+    // setLoading(true)
     try {
       const data = await fetch('http://localhost:3000/api/product')
       const { products } = await data.json()
       setProducts(products)
+      setLoading(false)
+      console.log(products)
     } catch (error) {
       alert('Erro de comunicação com o servidor.')
     }
-    setLoading(false)
   }
 
   //newProduct()-----------------------------------------
-  async function newProduct(event) {
-    event.preventDefault()
+  async function newProduct() {
+    // event.preventDefault()
 
-    if (!title || !description || !price) {
+    if (!title || !description || !price || !image) {
       alert('Preencha todos os campos')
     } else {
       const body = {
+        category: parseInt(category),
         title,
         description,
-        price,
+        price: Number(price),
         image
       }
 
@@ -85,14 +90,14 @@ export default function Admin() {
           },
           body: JSON.stringify(body)
         })
-        alert('Cadastrado com sucesso')
-        clearStates()
+        console.log('Cadastrado com sucesso')
         getProducts()
+        clearStates()
       } catch (error) {
         alert('Erro ao cadastrar o produto')
       }
-      setVisibleModal(false)
     }
+    setVisibleModal(true)
   }
 
   //editProduct()-----------------------------------------
@@ -123,6 +128,7 @@ export default function Admin() {
       await fetch('http://localhost:3000/api/product/' + id, {
         method: 'DELETE'
       })
+      getProducts()
     } catch (error) {
       alert('Erro ao deletar produto')
     }
@@ -135,6 +141,7 @@ export default function Admin() {
     setDescription(product.description)
     setPrice(product.price)
     setImage(product.image)
+    setDisplaySave('none')
   }
 
   //clearStates()------------------------------------------------
@@ -150,6 +157,29 @@ export default function Admin() {
     setDisplaySave('block')
     clearStates()
   }
+
+  const option = [
+    {
+      id: 1,
+      value: 'Adventure'
+    },
+    {
+      id: 2,
+      value: 'Cultural'
+    },
+    {
+      id: 3,
+      value: 'Gastronomic'
+    },
+    {
+      id: 4,
+      value: 'Historical'
+    },
+    {
+      id: 5,
+      value: 'Luxurious'
+    }
+  ]
 
   //return ---------------------------------------------------
   return (
@@ -171,7 +201,7 @@ export default function Admin() {
           <>
             <tbody>
               <tr>
-                <td>{product.id}</td>
+                <td key={product.id}>{product.id}</td>
                 <td>{product.category}</td>
                 <td>{product.title}</td>
                 <td>{product.description}</td>
@@ -184,7 +214,7 @@ export default function Admin() {
                   <AiFillDelete
                     onClick={() => {
                       const confirmBox = window.confirm(
-                        'Deseja deletar o produto?'
+                        'Delete the product from the database?'
                       )
                       if (confirmBox === true) {
                         deleteProduct(product.id)
@@ -201,6 +231,7 @@ export default function Admin() {
       <Modal
         style={customStyle}
         isOpen={visibleModal}
+        ariaHideApp={false}
         onRequestClose={() => setVisibleModal(false)}
       >
         <form className="modal-form">
@@ -213,8 +244,13 @@ export default function Admin() {
           </div>
           <label>
             <span>Select a category</span>
-            <select>
-              <option className="form-input"></option>
+            <select onChange={event => setCategory(event.target.value)}>
+              {option.map(option => (
+                <option value={option.id}>
+                  {option.value}
+                  {console.log(option.id)}
+                </option>
+              ))}
             </select>
           </label>
           <label>
