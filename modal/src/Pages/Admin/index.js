@@ -9,10 +9,10 @@ const customStyle = {
     width: 350,
     height: 'fit-content',
     position: 'absolute',
-    top: '40px',
-    left: '40px',
-    right: '40px',
-    bottom: '40px',
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
     border: '1px solid #ccc',
     background: '#fff',
     overflow: 'auto',
@@ -40,6 +40,7 @@ export default function Admin() {
   const [description, setDescription] = useState('')
   const [price, setPrice] = useState('')
   const [image, setImage] = useState('')
+  const [displaySave, setDisplaySave] = useState('block')
 
   // const [displayModal, setDisplayModal] = useState(false)
   const [visibleModal, setVisibleModal] = useState(false)
@@ -90,6 +91,7 @@ export default function Admin() {
       } catch (error) {
         alert('Erro ao cadastrar o produto')
       }
+      setVisibleModal(false)
     }
   }
 
@@ -145,21 +147,23 @@ export default function Admin() {
 
   function showModal() {
     setVisibleModal(true)
+    setDisplaySave('block')
+    clearStates()
   }
 
   //return ---------------------------------------------------
   return (
     <div>
-      <h1>Lista</h1>
-      <button onClick={() => showModal()}>Adicionar novo produto</button>
+      <h1>List</h1>
+      <button onClick={() => showModal()}>Add new product</button>
       <Table striped bordered hover>
         <thead>
           <tr>
             <th>Id</th>
-            <th>Categoria</th>
-            <th>Destino</th>
-            <th>Descrição</th>
-            <th>Preço</th>
+            <th>Category</th>
+            <th>Destiny</th>
+            <th>Description</th>
+            <th>Price</th>
           </tr>
         </thead>
 
@@ -205,28 +209,37 @@ export default function Admin() {
               className="modal-close-button"
               onClick={() => setVisibleModal(false)}
             />
-            <h1>Cadastro</h1>
+            <h1>Add new product</h1>
           </div>
           <label>
-            <span>Selecione a categoria</span>
+            <span>Select a category</span>
             <select>
               <option></option>
             </select>
           </label>
           <label>
-            <span>Produto</span>
+            <span>Title</span>
             <input></input>
           </label>
           <label>
-            <span>Descrição</span>
+            <span>Description</span>
             <input></input>
           </label>
           <label>
-            <span>Preço</span>
+            <span>Price</span>
             <input></input>
           </label>
-          <button>Salvar</button>
-          <button>Limpar</button>
+          <button
+            style={{ display: displaySave }}
+            className="form-save-btn"
+            type="submit"
+            onClick={() => newProduct()}
+          >
+            Save
+          </button>
+          <button className="form-cancel-btn" onClick={() => clearStates()}>
+            Cancel
+          </button>
         </form>
       </Modal>
     </div>

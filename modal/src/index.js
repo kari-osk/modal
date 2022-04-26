@@ -26,7 +26,7 @@ new Server({
     server.create('product', {
       id: 3,
       category: 'Gastronomic',
-      title: 'Switzeland',
+      title: 'Switzerland',
       description: 'beautiful destination',
       price: 7851
     })
