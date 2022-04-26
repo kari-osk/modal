@@ -7,12 +7,12 @@ import './styles.css'
 const customStyle = {
   content: {
     width: 350,
+
     height: 'fit-content',
     position: 'absolute',
-    top: '50%',
+    top: '25%',
     left: '50%',
     right: 'auto',
-    bottom: 'auto',
     border: '1px solid #ccc',
     background: '#fff',
     overflow: 'auto',
@@ -214,20 +214,41 @@ export default function Admin() {
           <label>
             <span>Select a category</span>
             <select>
-              <option></option>
+              <option className="form-input"></option>
             </select>
           </label>
           <label>
             <span>Title</span>
-            <input></input>
+            <input
+              className="form-input"
+              value={title}
+              onChange={event => setTitle(event.target.value)}
+            ></input>
           </label>
           <label>
             <span>Description</span>
-            <input></input>
+            <input
+              className="form-input"
+              value={description}
+              onChange={event => setDescription(event.target.value)}
+            ></input>
           </label>
           <label>
             <span>Price</span>
-            <input></input>
+            <input
+              type="number"
+              className="form-input"
+              value={price}
+              onChange={event => setPrice(event.target.value)}
+            ></input>
+          </label>
+          <label>
+            <span>Image</span>
+            <input
+              className="form-input"
+              value={image}
+              onChange={event => setImage(event.target.value)}
+            ></input>
           </label>
           <button
             style={{ display: displaySave }}
